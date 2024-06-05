@@ -1,0 +1,51 @@
+public class Codec {
+  
+    // Encodes a list of strings to a single string.
+
+    public String encode(List<String> strs) {
+        StringBuilder sb = new StringBuilder();
+        StringBuilder size = new StringBuilder();
+        size.append(strs.size()).append(" ");
+        for(int i = 0; i < strs.size(); i++){
+            size.append(strs.get(i).length()).append(" ");
+            sb.append(strs.get(i));
+        }
+        sb.insert(0, size.toString());
+        return sb.toString();
+    }
+
+    // Decodes a single string to a list of strings.
+    public List<String> decode(String s) {
+        List<Integer> nums = new ArrayList();
+        String[] strs = s.split(" ");
+        int size = Integer.valueOf(strs[0]);
+        for(int i = 0; i < size; i++){
+            nums.add(Integer.valueOf(strs[i+1]));
+        }
+        int idx = 0;
+        int k = size;
+        while( k >= 0){
+            if( s.charAt(idx) == ' '){
+                k--;
+            }
+            idx++;
+        }
+        List<String> result = new ArrayList();
+         int left = idx;
+         int right = idx;
+        for( int i =0; i < nums.size(); i++){
+             right += nums.get(i);
+            if(i != nums.size()-1){
+                 result.add(s.substring(left, right));
+            }else{
+                  result.add(s.substring(left));
+            }
+            left = right;
+        }
+        return result;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(strs));
